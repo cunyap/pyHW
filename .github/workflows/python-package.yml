@@ -28,7 +28,8 @@ jobs:
     - name: Build executable
       run: |
         python -m PyInstaller --noconsole --onefile pyHW/app.spec
+        echo "$PWD"
     - uses: actions/upload-artifact@v3
       with:
           name: app
-          path: pyHW\pyHW\dist
+          path: pyHW\dist
