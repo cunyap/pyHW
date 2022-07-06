@@ -28,3 +28,7 @@ jobs:
     - name: Build executable
       run: |
         python -m PyInstaller --noconsole --onefile pyHW/app.spec
+    - uses: actions/upload-artifact@v3
+      with:
+          name: app-binary
+          path: pyHW/pyHW/build/app
