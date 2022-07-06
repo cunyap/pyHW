@@ -34,7 +34,7 @@ jobs:
           name: app
           path: dist
     - name: version
-      run: echo "::set-output name=version::1"
+      run: echo "::set-output name=version::1.0.0"
       id: version
     - name: release
       uses: actions/create-release@v1
