@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel, QVBoxLayout, QPushButton, QWidget
 from PyQt5.QtGui import QIcon
+from pyHW.resource_path import resource_path
+from pathlib import Path
 import sys, os
-
-basedir = os.path.dirname(__file__)
 
 try:
     from ctypes import windll  # Only exists on Windows.
@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(label)
 
         button = QPushButton("Push")
-        button.setIcon(QIcon(os.path.join(basedir, "icons", "lightning.png")))
+        button.setIcon(QIcon(resource_path(str(Path("icons", "lightning.png")))))
         button.pressed.connect(self.close)
         layout.addWidget(button)
 
@@ -35,8 +35,9 @@ class MainWindow(QMainWindow):
 
         self.show()
 
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon(os.path.join(basedir, "icons", "hand.ico")))
+    app.setWindowIcon(QIcon(resource_path(str(Path("icons", "hand.ico")))))
     w = MainWindow()
     app.exec_()
