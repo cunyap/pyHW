@@ -33,17 +33,27 @@ jobs:
       with:
           name: app
           path: dist
-    - name: version
-      run: echo "::set-output name=version::1.0.0"
-      id: version
+    - name: Get tag name from ref
+      shell: bash
+      run: |
+        echo "Get tag name from ref"
+        echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+      id: get_tag
+    - name: Create tag in public repository
+      run: |
+        echo "reate tag in public repository"
+        cd ${{github.workspace}}/pyHW
+        echo "$PWD"
+        git tag ${{ steps.get_tag.outputs.tag }}
+        git push --tags --porcelain
     - name: release
       uses: actions/create-release@v1
       id: create_release
       with:
         draft: false
         prerelease: false
-        release_name: ${{ steps.version.outputs.version }}
-        tag_name: ${{ github.ref }}
+        tag_name: ${{ steps.get_tag.outputs.tag }}
+        release_name: Release ${{ steps.get_tag.outputs.tag }}
         body_path: README.md
       env:
         GITHUB_TOKEN: ${{ github.token }}
