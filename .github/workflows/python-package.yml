@@ -49,15 +49,15 @@ jobs:
         run: |
           python -m unittest discover -s pyHW//tests -t pyHW/tests
       - name: Run Linux Build
-          if: matrix.os == 'ubuntu-latest'
-          run: |
-              python -m PyInstaller --noconsole --onefile pyHW/app.spec
-              echo "$PWD"
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+           python -m PyInstaller --noconsole --onefile pyHW/app.spec
+           echo "$PWD"
       - name: Run Windows Build
-          if: matrix.os == 'windows-latest'
-          run: |
-              python -m PyInstaller --noconsole --onefile pyHW/app.spec
-              echo "$PWD"
+        if: matrix.os == 'windows-latest'
+        run: |
+            python -m PyInstaller --noconsole --onefile pyHW/app.spec
+            echo "$PWD"
       - name: Upload artifacs
         uses: actions/upload-artifact@v3
         with:
