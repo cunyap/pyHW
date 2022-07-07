@@ -81,11 +81,11 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: release_url
-      - name: Read upload url
-        id: get_release_info
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: release_url/release_url.txt
+#      - name: Read upload url
+#        id: get_release_info
+#        uses: juliangruber/read-file-action@v1
+#        with:
+#          path: release_url/release_url.txt
 #      - name: Echo release url
 #        run: |
 #            echo upload_url="${{ steps.get_release_info.outputs.content }}" >> $GITHUB_ENV
