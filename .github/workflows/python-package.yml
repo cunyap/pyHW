@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [windows-latest]
+        operating-system: [windows-latest, ubuntu-latest]
         python-version: ["3.5"]
 
     steps:
