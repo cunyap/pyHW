@@ -31,12 +31,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [windows-latest]
         include:
-          - os: ubuntu-latest
-            release_suffix: ubuntu
-          - os: macos-latest
-            release_suffix: mac
+#          - os: ubuntu-latest
+#            release_suffix: ubuntu
+#          - os: macos-latest
+#            release_suffix: mac
           - os: windows-latest
             release_suffix: windows
         python-version: ["3.5"]
@@ -55,11 +55,11 @@ jobs:
       - name: Test with pytest
         run: |
           python -m unittest discover -s pyHW//tests -t pyHW/tests
-      - name: Run Linux Build
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-           python -m PyInstaller --noconsole --onefile pyHW/app.spec
-           echo "$PWD"
+#      - name: Run Linux Build
+#        if: matrix.os == 'ubuntu-latest'
+#        run: |
+#           python -m PyInstaller --noconsole --onefile pyHW/app.spec
+#           echo "$PWD"
       - name: Run Windows Build
         if: matrix.os == 'windows-latest'
         run: |
@@ -70,11 +70,12 @@ jobs:
         with:
             name: app
             path: dist
-      - name: Release
-        uses: softprops/action-gh-release@v1
+      - name: Upload artifact to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          tag_name: ${{ needs.create_release.outputs.tag-name }}
-          files: release_${{ matrix.release_suffix }}
+          upload_url: ${{ needs.create_release.outputs.release_tag }}
           asset_path: dist/app
           asset_name: app_${{ matrix.release_suffix }}
-          asset_content_type: application/gzip
+          asset_content_type: application/zip
