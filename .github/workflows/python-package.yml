@@ -88,8 +88,8 @@ jobs:
           path: release_url/release_url.txt
       - name: Echo release url
         run: |
-            value="${{ steps.get_release_info.outputs.content }}"
-            echo ::set-output name=upload_url::$value
+            upload_url="${{ steps.get_release_info.outputs.content }}"
+            echo ::set-output name=upload_url::$upload_url
 #           echo ::set-output name=upload_url::"${{ steps.get_release_info.outputs.content }}"
 #      - name: Get Release File Name & Upload URL
 #        id: get_release_info
