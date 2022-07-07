@@ -86,23 +86,25 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: release_url/release_url.txt
-      - name: Echo release url
-        run: |
-            echo upload_url="${{ steps.get_release_info.outputs.content }}" >> $GITHUB_ENV
-#      - name: Get Release File Name & Upload URL
-#        id: get_release_info
+#      - name: Echo release url
 #        run: |
-#           value=$(cat release_url/release_url.txt)
-#           echo ::set-output name=upload_url::$value
+#            echo upload_url="${{ steps.get_release_info.outputs.content }}" >> $GITHUB_ENV
+#        shell: bash
+      - name: Get Release File Name & Upload URL
+        id: get_release_info
+        run: |
+           value=$(cat release_url/release_url.txt)
+           echo ::set-output name=upload_url::$value
+        shell: bash
       - name: Show env v
         run: |
-            echo "${{ env.upload_url }}"
+            echo "${{ steps.get_release_info.outputs.upload_url }}"
       - name: Upload artifact to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ env.upload_url }}
+          upload_url: ${{ steps.get_release_info.outputs.upload_url }}
           asset_path: dist/app
           asset_name: app_${{ matrix.release_suffix }}
           asset_content_type: application/zip
