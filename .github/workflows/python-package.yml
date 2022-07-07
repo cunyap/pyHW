@@ -81,11 +81,21 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: release_url
-      - name: Get Release File Name & Upload URL
+      - name: Read upload url
         id: get_release_info
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: release_url/release_url.txt
+      - name: Echo release url
         run: |
-           value=$(cat release_url/release_url.txt)
+           value="${{ steps.get_release_info.outputs.content }}"
+           echo value
            echo ::set-output name=upload_url::$value
+#      - name: Get Release File Name & Upload URL
+#        id: get_release_info
+#        run: |
+#           value=$(cat release_url/release_url.txt)
+#           echo ::set-output name=upload_url::$value
       - name: Upload artifact to release
         uses: actions/upload-release-asset@v1
         env:
