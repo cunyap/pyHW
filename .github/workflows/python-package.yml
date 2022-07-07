@@ -75,7 +75,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          upload_url: ${{ needs.create_release.outputs.release_tag }}
           asset_path: dist/app
           asset_name: app_${{ matrix.release_suffix }}
           asset_content_type: application/zip
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
