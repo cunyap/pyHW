@@ -25,6 +25,13 @@ jobs:
            draft: false
            prerelease: false
 #           body_path: RELEASE_NOTES.md
+      - name: Release URL on file
+          run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+      - name: Save Release URL File For Uploading Files
+        uses: actions/upload-artifact@v1
+        with:
+          name: release_url
+          path: release_url.txt
   build_release:
     name: Build Release
     needs: create_release
@@ -70,12 +77,21 @@ jobs:
         with:
             name: app
             path: dist
+      - name: Load Release URL File from release job
+        uses: actions/download-artifact@v1
+        with:
+          name: release_url
+      - name: Get Release File Name & Upload URL
+        id: get_release_info
+        run: |
+           value=`cat release_url/release_url.txt`
+           echo ::set-output name=upload_url::$value
       - name: Upload artifact to release
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          upload_url: ${{ steps.get_release_info.outputs.upload_url }}
           asset_path: dist/app
           asset_name: app_${{ matrix.release_suffix }}
           asset_content_type: application/zip
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
