@@ -26,7 +26,8 @@ jobs:
            prerelease: false
 #           body_path: RELEASE_NOTES.md
       - name: Release URL on file
-        run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+         run: echo "${{ steps.tag.outputs.release_tag }}" > release_url.txt
+#        run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
       - name: Save Release URL File For Uploading Files
         uses: actions/upload-artifact@v1
         with:
@@ -111,7 +112,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ needs.create_release.tag.outputs.release_tag }}
+          tag_name: ${{ steps.get_release_info.outputs.upload_url }}
           files: |
             dist/*
         env:
