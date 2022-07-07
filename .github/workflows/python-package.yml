@@ -99,12 +99,19 @@ jobs:
       - name: Show env v
         run: |
             echo "${{ steps.get_release_info.outputs.upload_url }}"
-      - name: Upload artifact to release
-        uses: actions/upload-release-asset@v1
+#      - name: Upload artifact to release
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+#          asset_path: dist/app*
+#          asset_name: app_${{ matrix.release_suffix }}
+#          asset_content_type: application/zip
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-          asset_path: dist/app*
-          asset_name: app_${{ matrix.release_suffix }}
-          asset_content_type: application/zip
