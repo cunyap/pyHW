@@ -24,7 +24,7 @@ jobs:
            tag_name: ${{ steps.tag.outputs.release_tag }}
            draft: false
            prerelease: false
-           body_path: RELEASE_NOTES.md
+#           body_path: RELEASE_NOTES.md
   build_release:
     name: Build Release
     needs: create_release
