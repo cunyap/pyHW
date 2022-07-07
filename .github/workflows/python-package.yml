@@ -38,10 +38,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, ubuntu-latest]
         include:
-#          - os: ubuntu-latest
-#            release_suffix: ubuntu
+          - os: ubuntu-latest
+            release_suffix: ubuntu
 #          - os: macos-latest
 #            release_suffix: mac
           - os: windows-latest
@@ -105,6 +105,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-          asset_path: dist/app.exe
+          asset_path: dist/app*
           asset_name: app_${{ matrix.release_suffix }}
           asset_content_type: application/zip
