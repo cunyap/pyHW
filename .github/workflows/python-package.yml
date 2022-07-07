@@ -38,14 +38,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [windows-latest]
         include:
-          - os: ubuntu-latest
-            release_suffix: ubuntu
+#          - os: ubuntu-latest
+#            release_suffix: ubuntu
 #          - os: macos-latest
 #            release_suffix: mac
-#          - os: windows-latest
-#            release_suffix: windows
+          - os: windows-latest
+            release_suffix: windows
         python-version: ["3.5"]
     runs-on: ${{ matrix.os }}
     steps:
