@@ -26,7 +26,7 @@ jobs:
            prerelease: false
 #           body_path: RELEASE_NOTES.md
       - name: Release URL on file
-          run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+        run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
       - name: Save Release URL File For Uploading Files
         uses: actions/upload-artifact@v1
         with:
