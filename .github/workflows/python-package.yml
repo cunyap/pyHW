@@ -79,9 +79,12 @@ jobs:
           python -m PyInstaller --noconsole --onefile pyHW/app.spec
           echo "$PWD"
       - name: Zip binaries
-        run: |
-          zip -r dist/app-x86-64-${{ matrix.release_suffix }}.zip dist
-        shell: bash
+        uses: edgarrc/action-7z@v1
+        with:
+          args: 7z a dist/app-x86-64-${{ matrix.release_suffix }}.zip dist
+#        run: |
+#          zip -r dist/app-x86-64-${{ matrix.release_suffix }}.zip dist
+#        shell: bash
       - name: Upload artifacs
         uses: actions/upload-artifact@v3
         with:
@@ -123,6 +126,6 @@ jobs:
         with:
           tag_name: ${{ steps.get_release_info.outputs.upload_url }}
           files: |
-            dist/*.zip
+            dist/app-x86-64-${{ matrix.release_suffix }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
