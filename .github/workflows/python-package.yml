@@ -79,9 +79,9 @@ jobs:
           python -m PyInstaller --noconsole --onefile pyHW/app.spec
           echo "$PWD"
       - name: Zip binaries
-        uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r dist/app-x86-64-${{ matrix.release_suffix }}.zip dist
+        run: |
+          zip -r dist/app-x86-64-${{ matrix.release_suffix }}.zip dist
+        shell: bash
       - name: Upload artifacs
         uses: actions/upload-artifact@v3
         with:
