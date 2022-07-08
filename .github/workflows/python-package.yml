@@ -10,6 +10,8 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
       - name: Generate release tag
         id: tag
         run: |
@@ -24,10 +26,9 @@ jobs:
            tag_name: ${{ steps.tag.outputs.release_tag }}
            draft: false
            prerelease: false
-#           body_path: RELEASE_NOTES.md
+           body_path: RELEASE_NOTES.md
       - name: Release URL on file
         run: echo "${{ steps.tag.outputs.release_tag }}" > release_url.txt
-#        run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
       - name: Save Release URL File For Uploading Files
         uses: actions/upload-artifact@v1
         with:
@@ -39,12 +40,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [ubuntu-latest] # windows-latest, ubuntu-latest, macos-latest
         include:
           - os: ubuntu-latest
             release_suffix: linux
-#          - os: macos-latest
-#            release_suffix: apple-darwin
+          - os: macos-latest
+            release_suffix: apple-darwin
           - os: windows-latest
             release_suffix: windows
         python-version: ["3.5"]
@@ -79,9 +80,6 @@ jobs:
           python -m PyInstaller --noconsole --onefile pyHW/app.spec
           echo "$PWD"
       - name: Zip binaries
-#        uses: edgarrc/action-7z@v1
-#        with:
-#          args: 7z a dist/app-x86-64-${{ matrix.release_suffix }}.zip dist
         run: |
           if [[ "${{ matrix.os }}" == windows-latest ]]; then
               7z a dist/app-x86-64-${{ matrix.release_suffix }}.zip dist
@@ -98,33 +96,15 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: release_url
-#      - name: Read upload url
-#        id: get_release_info
-#        uses: juliangruber/read-file-action@v1
-#        with:
-#          path: release_url/release_url.txt
-#      - name: Echo release url
-#        run: |
-#            echo upload_url="${{ steps.get_release_info.outputs.content }}" >> $GITHUB_ENV
-#        shell: bash
       - name: Get Release File Name & Upload URL
         id: get_release_info
         run: |
            value=$(cat release_url/release_url.txt)
            echo ::set-output name=upload_url::$value
         shell: bash
-      - name: Show env v
-        run: |
-            echo "${{ steps.get_release_info.outputs.upload_url }}"
-#      - name: Upload artifact to release
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-#          asset_path: dist/app*
-#          asset_name: app_${{ matrix.release_suffix }}
-#          asset_content_type: application/zip
+#      - name: Show env v
+#        run: |
+#            echo "${{ steps.get_release_info.outputs.upload_url }}"
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
