@@ -81,7 +81,7 @@ jobs:
       - name: Zip binaries
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r app-x86-64-${{ matrix.release_suffix }}.zip dist
+          args: zip -qq -r dist/app-x86-64-${{ matrix.release_suffix }}.zip dist
       - name: Upload artifacs
         uses: actions/upload-artifact@v3
         with:
@@ -123,6 +123,6 @@ jobs:
         with:
           tag_name: ${{ steps.get_release_info.outputs.upload_url }}
           files: |
-            dist/*
+            dist/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
