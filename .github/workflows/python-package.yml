@@ -42,9 +42,9 @@ jobs:
         os: [windows-latest, ubuntu-latest]
         include:
           - os: ubuntu-latest
-            release_suffix: ubuntu
+            release_suffix: linux
 #          - os: macos-latest
-#            release_suffix: mac
+#            release_suffix: apple-darwin
           - os: windows-latest
             release_suffix: windows
         python-version: ["3.5"]
@@ -73,10 +73,19 @@ jobs:
         run: |
             python -m PyInstaller --noconsole --onefile pyHW/app.spec
             echo "$PWD"
+      - name: Run Darwin Mac Build
+        if: matrix.os == 'macos-latest'
+        run: |
+          python -m PyInstaller --noconsole --onefile pyHW/app.spec
+          echo "$PWD"
+      - name: Zip binaries
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r app-x86-64-${{ matrix.release_suffix }}.zip dist
       - name: Upload artifacs
         uses: actions/upload-artifact@v3
         with:
-            name: app
+            name: app-x86-64-${{ matrix.release_suffix }}.zip
             path: dist
       - name: Load Release URL File from release job
         uses: actions/download-artifact@v1
