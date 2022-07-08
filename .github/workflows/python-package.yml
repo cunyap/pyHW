@@ -22,7 +22,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-           name: ${{ github.ref_name }}
+           name: Latest Development Builds # ${{ github.ref_name }}
            tag_name: ${{ steps.tag.outputs.release_tag }}
            draft: false
            prerelease: false
@@ -40,7 +40,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest] # windows-latest, ubuntu-latest, macos-latest
+        os: [windows-latest, ubuntu-latest, macos-latest] # windows-latest, ubuntu-latest, macos-latest
         include:
           - os: ubuntu-latest
             release_suffix: linux
